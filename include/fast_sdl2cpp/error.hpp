@@ -25,6 +25,7 @@
 #ifndef FAST_SDL2_CPP_ERROR_HPP
 #define FAST_SDL2_CPP_ERROR_HPP
 
+#include <cstdint>
 #include <string_view>
 
 #include <SDL.h>
@@ -41,8 +42,8 @@ API_EXPORT constexpr auto DECLARATION_STD_CALL get_error() {
 
 template <typename... Args>
 API_EXPORT constexpr auto DECLARATION_STD_CALL
-set_error(std::string_view const& fmt_str) {
-  return SDL_SetError(fmt_str.data(), Args);
+set_error(std::string_view const& fmt_str, Args... args) -> std::int32_t {
+  return SDL_SetError(fmt_str.data(), args);
 }
 
 API_EXPORT constexpr auto DECLARATION_STD_CALL clear_error() {

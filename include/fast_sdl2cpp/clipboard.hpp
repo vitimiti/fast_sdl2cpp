@@ -22,55 +22,38 @@
 // SOFTWARE.
 //================================================================================================//
 
-#ifndef FAST_SDL2_CPP_SYSTEM_HPP
-#define FAST_SDL2_CPP_SYSTEM_HPP
+#ifndef FAST_SDL2_CPP_CLIPBOARD_HPP
+#define FAST_SDL2_CPP_CLIPBOARD_HPP
 
-#include <cstdint>
 #include <optional>
+#include <string_view>
 
 #include <SDL.h>
 
-#include <advanced_types/optional.hpp>
+#include <advanced_types/failure.hpp>
 
 #include <preproc_config/declaration.hpp>
 #include <preproc_config/export.hpp>
 
 #include "fast_sdl2cpp/error.hpp"
-#include "fast_sdl2cpp/subsystems.hpp"
 
 namespace fsdl2cpp {
 API_EXPORT constexpr auto DECLARATION_STD_CALL
-initialize(subsystems const& flags) -> adv_t::optional_error_t {
-  if (auto error_code = SDL_Init(static_cast<std::uint32_t>(flags));
-      error_code < 0) {
+set_clipboard_text(std::string_view const& text) -> adv_t::optional_error_t {
+  if (auto error_code = SDL_SetClipboardText(text.data()); error_code < 0) {
     return std::make_optional<adv_t::error_t>(get_error(), error_code);
   }
 
   return std::nullopt;
 }
 
-API_EXPORT constexpr auto DECLARATION_STD_CALL
-initialize_subsystem(subsystems const& flags) -> adv_t::optional_error_t {
-  if (auto error_code = SDL_InitSubSystem(static_cast<std::uint32_t>(flags));
-      error_code < 0) {
-    return std::make_optional<adv_t::error_t>(get_error(), error_code);
-  }
-
-  return std::nullopt;
+API_EXPORT constexpr auto DECLARATION_STD_CALL get_clipboard_text() {
+  return std::string_view{SDL_GetClipboardText()};
 }
 
-API_EXPORT constexpr auto DECLARATION_STD_CALL
-quit_subsystem(subsystems const& flags) {
-  SDL_QuitSubSystem(static_cast<std::uint32_t>(flags));
+API_EXPORT constexpr auto DECLARATION_STD_CALL has_clipboard_text() {
+  return SDL_HasClipboardText() == SDL_TRUE;
 }
-
-API_EXPORT constexpr auto DECLARATION_STD_CALL
-was_init(subsystems const& flags) {
-  return static_cast<subsystems>(
-      SDL_WasInit(static_cast<std::uint32_t>(flags)));
-}
-
-API_EXPORT constexpr auto DECLARATION_STD_CALL quit() { SDL_Quit(); }
 } // namespace fsdl2cpp
 
-#endif // FAST_SDL2_CPP_SYSTEM_HPP
+#endif // FAST_SDL2_CPP_CLIPBOARD_HPP
