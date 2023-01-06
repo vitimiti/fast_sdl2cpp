@@ -41,8 +41,12 @@ enum class subsystems : std::uint32_t {
   haptic          = SDL_INIT_HAPTIC,
   game_controller = SDL_INIT_GAMECONTROLLER,
   events          = SDL_INIT_EVENTS,
-  no_parachute    = SDL_INIT_NOPARACHUTE,
-  everything      = SDL_INIT_EVERYTHING
+  sensor          = SDL_INIT_SENSOR,
+
+  no_parachute [[deprecated("For compatibility, this flags will be ignored")]] =
+      SDL_INIT_NOPARACHUTE,
+
+  everything = SDL_INIT_EVERYTHING
 };
 
 constexpr auto operator|(subsystems const& lhs, subsystems const& rhs) {
@@ -129,9 +133,9 @@ inline auto operator<<(std::ostream& stream, subsystems const& obj)
       final_str += "Events";
     }
 
-    if ((obj & subsystems::no_parachute) != subsystems::none) {
+    if ((obj & subsystems::sensor) != subsystems::none) {
       concat();
-      final_str += "No Parachute";
+      final_str += "Sensor";
     }
   }
 

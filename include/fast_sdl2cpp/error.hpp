@@ -25,6 +25,7 @@
 #ifndef FAST_SDL2_CPP_ERROR_HPP
 #define FAST_SDL2_CPP_ERROR_HPP
 
+#include <array>
 #include <cstdint>
 #include <string_view>
 
@@ -36,14 +37,21 @@
 #include <preproc_config/export.hpp>
 
 namespace fsdl2cpp {
-API_EXPORT constexpr auto DECLARATION_STD_CALL get_error() {
-  return std::string_view{SDL_GetError()};
-}
-
 template <typename... Args>
 API_EXPORT constexpr auto DECLARATION_STD_CALL
 set_error(std::string_view const& fmt_str, Args... args) -> std::int32_t {
   return SDL_SetError(fmt_str.data(), args);
+}
+
+API_EXPORT constexpr auto DECLARATION_STD_CALL get_error() {
+  return std::string_view{SDL_GetError()};
+}
+
+template <std::size_t BufferSize>
+API_EXPORT constexpr auto DECLARATION_STD_CALL
+get_error_msg(std::array<char, BufferSize> buffer) {
+  return std::string_view{
+      SDL_GetErrorMsg(buffer.data(), static_cast<std::int32_t>(buffer.size()))};
 }
 
 API_EXPORT constexpr auto DECLARATION_STD_CALL clear_error() {

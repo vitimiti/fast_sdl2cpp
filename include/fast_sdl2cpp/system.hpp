@@ -39,8 +39,8 @@
 #include "fast_sdl2cpp/subsystems.hpp"
 
 namespace fsdl2cpp {
-API_EXPORT constexpr auto DECLARATION_STD_CALL
-initialize(subsystems const& flags) -> adv_t::optional_error_t {
+API_EXPORT constexpr auto DECLARATION_STD_CALL init(subsystems const& flags)
+    -> adv_t::optional_error_t {
   if (auto error_code = SDL_Init(static_cast<std::uint32_t>(flags));
       error_code < 0) {
     return std::make_optional<adv_t::error_t>(get_error(), error_code);
@@ -50,7 +50,7 @@ initialize(subsystems const& flags) -> adv_t::optional_error_t {
 }
 
 API_EXPORT constexpr auto DECLARATION_STD_CALL
-initialize_subsystem(subsystems const& flags) -> adv_t::optional_error_t {
+init_subsystem(subsystems const& flags) -> adv_t::optional_error_t {
   if (auto error_code = SDL_InitSubSystem(static_cast<std::uint32_t>(flags));
       error_code < 0) {
     return std::make_optional<adv_t::error_t>(get_error(), error_code);
