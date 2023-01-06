@@ -1,0 +1,12 @@
+# Ignore all the build directories
+*[B|b]uild*
+*[O|o]ut*
+
+# Ignore configuration directories and files
+.vs
+.idea
+.vscode
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
