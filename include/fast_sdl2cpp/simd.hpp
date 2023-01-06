@@ -46,9 +46,9 @@ API_EXPORT constexpr auto DECLARATION_STD_CALL simd_get_alignment()
 }
 
 API_EXPORT inline auto DECLARATION_STD_CALL simd_alloc(std::size_t const length)
-    -> adv_t::object_or_error_t<std::unique_ptr<
-        detail::simd_mem_buffer_t,
-        std::function<void(detail::simd_mem_buffer_t*)>>> { // NOLINT
+    -> adv_t::object_or_error_t<
+        std::unique_ptr<detail::simd_mem_buffer_t,
+                        std::function<void(detail::simd_mem_buffer_t*)>>> {
   auto result =
       std::unique_ptr<detail::simd_mem_buffer_t,
                       std::function<void(detail::simd_mem_buffer_t*)>>(
